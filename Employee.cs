@@ -1,81 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RecapMVC.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
-namespace RecapMVC.Controllers
+namespace RecapMVC.Models
 {
-    public class Employee : Controller
+    public class Employee
     {
-        public IActionResult Index()
+        [Key]
+        public int EmpID { get; set; }
+        public string EmpName { get; set; } =string.Empty;
+        public string Email { get; set; }=string.Empty;
+        public int Salary { get; set; }
+    }
+    public class EmployeeDBContext: DbContext
+    {
+        public DbSet<Employee> Employees { get; set;}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var context = new EmployeeDBContext();
-            var model = context.Employees.ToList();
-            return View(model);
-        }
-
-        public IActionResult OnFind(int id)
-        {
-            var context = new EmployeeDBContext();
-            var record = context.Employees.FirstOrDefault(r=>r.EmpID==id);
-            if(record == null)
-            {
-                throw new Exception("No record found");
-            }
-            return View(record);
-
-        }
-        [HttpPost]
-        public IActionResult OnFind(RecapMVC.Models.Employee Pdata) 
-        {
-            var context = new EmployeeDBContext();
-            var rec =  context.Employees.FirstOrDefault(rec => rec.EmpID ==Pdata.EmpID );
-            if (rec != null)
-            {
-                rec.EmpID = Pdata.EmpID;
-                rec.EmpName = Pdata.EmpName;
-                rec.Email = Pdata.Email;
-                rec.Salary = Pdata.Salary;
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return View(null);
-            }
-        }
-
-        public IActionResult OnDelete(int id)
-        {
-            var context = new EmployeeDBContext();
-            var record = context.Employees.FirstOrDefault(rec => rec.EmpID == id);
-            if(record != null)
-            {
-                context.Remove(record);
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return View(null);
-            }
-        }
-
-        
-        public IActionResult OnAdd()
-        {
-            var context = new RecapMVC.Models.Employee();
-            return View(context);
-
-        }
-
-
-        [HttpPost]
-        public IActionResult OnAdd(RecapMVC.Models.Employee Pdata)
-        {
-            var context = new EmployeeDBContext();
-            context.Employees.Add(Pdata);
-            context.SaveChanges();
-            return RedirectToAction("Index");
-
+            const string STRCON = @"Data Source=W-674PY03-1;Initial Catalog=Himanshu1Db;Persist Security Info=True;User ID=sa;Password=Password@12345; TrustServerCertificate=True"; 
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseSqlServer(STRCON);
         }
     }
 }
