@@ -1,0 +1,16 @@
+﻿@model RecapMVC.Models.Employee
+@{
+    ViewData["Title"] = "OnAdd";
+}
+
+<h1>OnAdd</h1>
+<div>
+    @using (Html.BeginForm())
+    {
+    <p>Emp Name : @Html.EditorFor(m=>m.EmpName)</p>
+    <p>Emp Email : @Html.EditorFor(m=>m.Email)</p>
+    <p>Emp Salary : @Html.EditorFor(m=>m.Salary)</p>
+    <button class="btn_success">Submit</button>
+    }
+</div>
+

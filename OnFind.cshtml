@@ -1,0 +1,21 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "OnFind";
+}
+
+<h1>Edit details</h1>
+<hr />
+<div>
+    @using (Html.BeginForm())
+    {
+        <div>
+            <p>Emp Id: @Html.DisplayFor(m=>m.EmpID) @Html.HiddenFor(m=>m.EmpID)</p>
+            <p>Emp Name : @Html.EditorFor(m=>m.EmpName)</p>
+            <p>Emp Email : @Html.EditorFor(m=>m.Email)</p>
+            <p>Emp Salary : @Html.EditorFor(m=>m.Salary)</p>
+            <button class="btn_success">Save Changes</button>
+        </div>
+    }
+</div>
+
+
